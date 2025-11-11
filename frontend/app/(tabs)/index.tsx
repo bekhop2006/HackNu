@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import { ZamanColors } from '@/constants/theme';
-import ZamanLogo from '@/components/zaman-logo';
+import { CryptoKZColors } from '@/constants/theme';
+import CryptoKZLogo from '@/components/crypto-kz-logo';
 
 interface UserData {
   id: number;
@@ -88,28 +88,28 @@ export default function HomeScreen() {
       description: 'Real-time AI conversations',
       icon: 'chatbubbles',
       href: '/live-chat' as const,
-      bgColor: ZamanColors.cloud
+      bgColor: CryptoKZColors.cloud
     },
     {
       title: 'Wallet',
       description: 'Manage your transactions',
       icon: 'wallet',
       href: '/transactions' as const,
-      bgColor: ZamanColors.cloud
+      bgColor: CryptoKZColors.cloud
     },
     {
       title: 'Financial Analysis',
       description: 'AI-powered insights',
       icon: 'analytics',
       href: '/financial-analysis' as const,
-      bgColor: ZamanColors.cloud
+      bgColor: CryptoKZColors.cloud
     },
     {
       title: 'Explore',
       description: 'Discover new features',
       icon: 'compass',
       href: '/explore' as const,
-      bgColor: ZamanColors.cloud
+      bgColor: CryptoKZColors.cloud
     }
   ];
 
@@ -130,9 +130,9 @@ export default function HomeScreen() {
         {/* Minimal Header */}
         <View style={styles.header}>
           <View style={styles.logoMark}>
-            <ZamanLogo size={90} withAccent />
+            <CryptoKZLogo size={90} withAccent />
           </View>
-          <Text style={styles.appName}>ZAMAN</Text>
+          <Text style={styles.appName}>CRYPTO KZ</Text>
           <Text style={styles.welcomeText}>
             Welcome, {user ? `${user.name} ${user.surname}` : 'Beknur Ualikhanuly'}
           </Text>
@@ -154,7 +154,7 @@ export default function HomeScreen() {
                       <Ionicons 
                         name={feature.icon as any} 
                         size={28} 
-                        color={ZamanColors.white}
+                        color={CryptoKZColors.white}
                       />
                     </View>
                     <Text style={styles.cardTitle}>
@@ -177,7 +177,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
   },
   scrollView: {
     flex: 1,
@@ -190,16 +190,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: Platform.OS === 'ios' ? 60 : 40,
     right: 24,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderWidth: 1,
-    borderColor: ZamanColors.gray[300],
+    borderColor: CryptoKZColors.gray[300],
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 12,
     zIndex: 100,
   },
   logoutText: {
-    color: ZamanColors.persianGreen,
+    color: CryptoKZColors.persianGreen,
     fontWeight: '500',
     fontSize: 15,
   },
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     paddingHorizontal: 32,
     alignItems: 'center',
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
   },
   logoMark: {
     marginBottom: 20,
@@ -218,19 +218,19 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '300',
     letterSpacing: 8,
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginBottom: 24,
   },
   welcomeText: {
     fontSize: 20,
     fontWeight: '600',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitleText: {
     fontSize: 15,
-    color: ZamanColors.gray[500],
+    color: CryptoKZColors.gray[500],
     fontWeight: '400',
     textAlign: 'center',
     marginBottom: 24,
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
     textTransform: 'uppercase',
     letterSpacing: 1,
     marginBottom: 20,
@@ -257,9 +257,9 @@ const styles = StyleSheet.create({
   },
   featureCard: {
     width: '47%',
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderWidth: 1,
-    borderColor: ZamanColors.gray[300],
+    borderColor: CryptoKZColors.gray[300],
     borderRadius: 16,
     padding: 24,
     alignItems: 'center',
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: ZamanColors.persianGreen,
+    backgroundColor: CryptoKZColors.persianGreen,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
@@ -278,13 +278,13 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginBottom: 8,
     textAlign: 'center',
   },
   cardDescription: {
     fontSize: 13,
-    color: ZamanColors.gray[500],
+    color: CryptoKZColors.gray[500],
     textAlign: 'center',
     lineHeight: 18,
   },

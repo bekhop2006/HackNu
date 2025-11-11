@@ -2,9 +2,9 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Modal, Imag
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import FaceCamera from '@/components/face-camera';
-import ZamanLogo from '@/components/zaman-logo';
+import CryptoKZLogo from '@/components/crypto-kz-logo';
 import { Ionicons } from '@expo/vector-icons';
-import { ZamanColors } from '@/constants/theme';
+import { CryptoKZColors } from '@/constants/theme';
 import { loginUser, registerUser, verifyFaceID, type UserData } from '@/lib/api-client';
 
 export default function LoginScreen() {
@@ -277,9 +277,9 @@ export default function LoginScreen() {
           {/* Minimal Header */}
           <View style={styles.header}>
             <View style={styles.logoMark}>
-              <ZamanLogo size={90} withAccent />
+              <CryptoKZLogo size={90} withAccent />
             </View>
-            <Text style={styles.appName}>ZAMAN</Text>
+            <Text style={styles.appName}>CRYPTO KZ</Text>
             <Text style={styles.tagline}>
               {mode === 'login' ? 'Welcome back' : 'Get started'}
             </Text>
@@ -310,7 +310,7 @@ export default function LoginScreen() {
                   onPress={() => setShowCamera(true)}
                   disabled={isLoading}
                 >
-                  <Ionicons name="camera-outline" size={24} color={ZamanColors.persianGreen} />
+                  <Ionicons name="camera-outline" size={24} color={CryptoKZColors.persianGreen} />
                   <Text style={styles.captureButtonText}>
                     {mode === 'login' ? 'Scan face' : 'Capture face'}
                   </Text>
@@ -324,7 +324,7 @@ export default function LoginScreen() {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <ActivityIndicator color={ZamanColors.black} />
+                    <ActivityIndicator color={CryptoKZColors.black} />
                   ) : (
                     <Text style={styles.primaryButtonText}>Verify & Login</Text>
                   )}
@@ -349,7 +349,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Email"
-                  placeholderTextColor={ZamanColors.gray[400]}
+                  placeholderTextColor={CryptoKZColors.gray[400]}
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -360,7 +360,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Password"
-                  placeholderTextColor={ZamanColors.gray[400]}
+                  placeholderTextColor={CryptoKZColors.gray[400]}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry
@@ -373,7 +373,7 @@ export default function LoginScreen() {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <ActivityIndicator color={ZamanColors.black} />
+                    <ActivityIndicator color={CryptoKZColors.black} />
                   ) : (
                     <Text style={styles.primaryButtonText}>Login</Text>
                   )}
@@ -389,7 +389,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="First name"
-                  placeholderTextColor={ZamanColors.gray[400]}
+                  placeholderTextColor={CryptoKZColors.gray[400]}
                   value={name}
                   onChangeText={setName}
                   autoCapitalize="words"
@@ -399,7 +399,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Last name"
-                  placeholderTextColor={ZamanColors.gray[400]}
+                  placeholderTextColor={CryptoKZColors.gray[400]}
                   value={surname}
                   onChangeText={setSurname}
                   autoCapitalize="words"
@@ -409,7 +409,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Email"
-                  placeholderTextColor={ZamanColors.gray[400]}
+                  placeholderTextColor={CryptoKZColors.gray[400]}
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -420,7 +420,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Phone"
-                  placeholderTextColor={ZamanColors.gray[400]}
+                  placeholderTextColor={CryptoKZColors.gray[400]}
                   value={phone}
                   onChangeText={setPhone}
                   keyboardType="phone-pad"
@@ -430,7 +430,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Password (min 8 characters)"
-                  placeholderTextColor={ZamanColors.gray[400]}
+                  placeholderTextColor={CryptoKZColors.gray[400]}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry
@@ -443,7 +443,7 @@ export default function LoginScreen() {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <ActivityIndicator color={ZamanColors.black} />
+                    <ActivityIndicator color={CryptoKZColors.black} />
                   ) : (
                     <Text style={styles.primaryButtonText}>Create Account</Text>
                   )}
@@ -489,7 +489,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
   },
   keyboardView: {
     flex: 1,
@@ -511,12 +511,12 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '300',
     letterSpacing: 8,
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginBottom: 8,
   },
   tagline: {
     fontSize: 15,
-    color: ZamanColors.gray[500],
+    color: CryptoKZColors.gray[500],
     fontWeight: '400',
   },
   content: {
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
     textTransform: 'uppercase',
     letterSpacing: 1,
     marginBottom: 16,
@@ -538,16 +538,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderWidth: 1,
-    borderColor: ZamanColors.gray[300],
+    borderColor: CryptoKZColors.gray[300],
     borderRadius: 12,
     paddingVertical: 20,
     gap: 12,
   },
   captureButtonText: {
     fontSize: 16,
-    color: ZamanColors.persianGreen,
+    color: CryptoKZColors.persianGreen,
     fontWeight: '500',
   },
   photoContainer: {
@@ -558,31 +558,31 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: ZamanColors.gray[100],
+    backgroundColor: CryptoKZColors.gray[100],
     borderWidth: 2,
-    borderColor: ZamanColors.persianGreen,
+    borderColor: CryptoKZColors.persianGreen,
   },
   linkButton: {
     paddingVertical: 8,
   },
   linkText: {
     fontSize: 15,
-    color: ZamanColors.persianGreen,
+    color: CryptoKZColors.persianGreen,
     fontWeight: '500',
   },
   input: {
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderWidth: 1,
-    borderColor: ZamanColors.gray[300],
+    borderColor: CryptoKZColors.gray[300],
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginBottom: 12,
   },
   primaryButton: {
-    backgroundColor: ZamanColors.solar,
+    backgroundColor: CryptoKZColors.solar,
     borderRadius: 12,
     paddingVertical: 18,
     alignItems: 'center',
@@ -592,7 +592,7 @@ const styles = StyleSheet.create({
   primaryButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
   },
   divider: {
     flexDirection: 'row',
@@ -602,12 +602,12 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: ZamanColors.gray[200],
+    backgroundColor: CryptoKZColors.gray[200],
   },
   dividerText: {
     marginHorizontal: 16,
     fontSize: 13,
-    color: ZamanColors.gray[400],
+    color: CryptoKZColors.gray[400],
     fontWeight: '400',
   },
   switchButton: {
@@ -618,11 +618,11 @@ const styles = StyleSheet.create({
   },
   switchText: {
     fontSize: 15,
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
   },
   switchTextBold: {
     fontSize: 15,
-    color: ZamanColors.persianGreen,
+    color: CryptoKZColors.persianGreen,
     fontWeight: '600',
   },
 });

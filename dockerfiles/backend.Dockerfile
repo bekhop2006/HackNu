@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.11-slim
 
 WORKDIR /backend
 
@@ -12,8 +12,9 @@ RUN apt-get update && apt-get install -y \
     libgomp1
 
 COPY ../backend/requirements.txt ./
-
-RUN pip install -r requirements.txt
+# Upgrade pip and install deps without cache (more reliable in slim images)
+RUN python -m pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 ENV TF_ENABLE_ONEDNN_OPTS=0
 

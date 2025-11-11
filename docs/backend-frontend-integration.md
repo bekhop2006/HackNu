@@ -27,6 +27,21 @@ The backend and frontend are properly connected with some configuration issues t
 - **Backend URL:** `http://46.101.175.118:8000` (Production server)
 - **Local Override:** Available via `EXPO_PUBLIC_BACKEND_URL` env var
 
+### New: Crypto Service (KZT-quoted)
+
+Base path: `/api/crypto`
+
+- GET `/api/crypto/prices` → current prices (KZT) for BTC/ETH/USDT
+- GET `/api/crypto/portfolio/balances?user_id=<id>` → balances and valuation in KZT
+- POST `/api/crypto/orders/market/buy?user_id=<id>`
+  - Body: `{ "symbol": "BTC", "kzt_amount": 50000.00, "kzt_account_id": 1 }`
+- POST `/api/crypto/orders/market/sell?user_id=<id>`
+  - Body: `{ "symbol": "BTC", "quantity": "0.01", "kzt_account_id": 1 }`
+
+Notes:
+- Supported symbols: BTC, ETH, USDT
+- Prices via CoinGecko (cached ~30s)
+
 ---
 
 ## 🚨 CRITICAL ISSUES

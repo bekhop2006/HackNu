@@ -13,6 +13,7 @@ from services.cart.router import router as cart_router
 from services.product.router import router as product_router
 from services.transaction.router import router as transaction_router
 from rag_agent.routes.transaction_router import router as rag_transaction_router
+from services.crypto.router import router as crypto_router
 
 
 app = FastAPI(
@@ -47,6 +48,7 @@ app.include_router(rag_router, tags=["RAG"])
 app.include_router(rag_live_query_router, tags=["RAG Live Query"])
 app.include_router(predict_router, prefix="/api")
 app.include_router(rag_transaction_router)
+app.include_router(crypto_router)
 
 @app.on_event("startup")
 def startup_event():

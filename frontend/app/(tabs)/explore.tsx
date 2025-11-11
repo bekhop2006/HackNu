@@ -11,15 +11,15 @@ import {
   ActivityIndicator,
   Dimensions,
 } from 'react-native';
-import { ZamanColors } from '@/constants/theme';
+import { CryptoKZColors } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
-import ZamanLogo from '@/components/zaman-logo';
+import CryptoKZLogo from '@/components/crypto-kz-logo';
 import { config } from '@/lib/config';
 
 // AI Character Configuration
-const AI_CHARACTER_NAME = "Zaman";
-const WELCOME_MESSAGE = "I'm Zaman. Your future self asked me to help you get there.";
+const AI_CHARACTER_NAME = "Crypto KZ";
+const WELCOME_MESSAGE = "I'm Crypto KZ. Your future self asked me to help you get there.";
 
 interface ChatMessage {
   id: number;
@@ -172,11 +172,10 @@ export default function ExploreScreen() {
   }, [chatState.messages]);
 
   const fixedPrompts = [
-    "What Islamic banking products does Zaman offer?",
-    "How does Zaman ensure Sharia compliance in its services?",
-    "How can I open a halal savings account with Zaman?",
-    "What investment opportunities are available in Islamic banking?",
-   
+    "Which cryptocurrencies are available on Crypto KZ and how can I buy them?",
+    "How do I transfer USDT/USDC to another wallet (TRON, TON, ETH)?",
+    "How can I deposit crypto and withdraw to KZT?",
+    "What are the fees and limits for crypto transfers on Crypto KZ?",
   ];
 
   const startNewChat = useCallback(() => {
@@ -215,7 +214,7 @@ export default function ExploreScreen() {
               style={styles.newChatButton}
               onPress={startNewChat}
             >
-              <Ionicons name="add-circle-outline" size={20} color={ZamanColors.persianGreen} />
+              <Ionicons name="add-circle-outline" size={20} color={CryptoKZColors.persianGreen} />
               <Text style={styles.newChatButtonText}>New Chat</Text>
             </TouchableOpacity>
           )}
@@ -225,7 +224,7 @@ export default function ExploreScreen() {
         <View style={styles.avatarSection}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatarCircle}>
-              <ZamanLogo size={isSmallScreen ? 60 : 80} withAccent />
+              <CryptoKZLogo size={isSmallScreen ? 60 : 80} withAccent />
             </View>
           </View>
           <View style={styles.statusBadge}>
@@ -282,7 +281,7 @@ export default function ExploreScreen() {
                     {/* Agents Used */}
                     <View style={styles.agentsContainer}>
                       <View style={styles.metadataLabelRow}>
-                        <Ionicons name="git-network-outline" size={14} color={ZamanColors.gray[600]} />
+                        <Ionicons name="git-network-outline" size={14} color={CryptoKZColors.gray[600]} />
                         <Text style={styles.metadataLabel}>
                           Agents:
                         </Text>
@@ -301,7 +300,7 @@ export default function ExploreScreen() {
                     {/* Sources Count */}
                     {msg.sources && msg.sources.length > 0 && (
                       <View style={styles.metadataRow}>
-                        <Ionicons name="library-outline" size={12} color={ZamanColors.gray[600]} />
+                        <Ionicons name="library-outline" size={12} color={CryptoKZColors.gray[600]} />
                         <Text style={styles.sourcesCount}>
                           {msg.sources.length} source{msg.sources.length > 1 ? 's' : ''}
                         </Text>
@@ -322,7 +321,7 @@ export default function ExploreScreen() {
           {/* Loading Indicator */}
           {chatState.loading && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="small" color={ZamanColors.persianGreen} />
+              <ActivityIndicator size="small" color={CryptoKZColors.persianGreen} />
               <Text style={styles.loadingText}>
                 {AI_CHARACTER_NAME} is thinking...
               </Text>
@@ -341,7 +340,7 @@ export default function ExploreScreen() {
                   style={styles.promptButton}
                   onPress={() => handleSuggestedPrompt(prompt)}
                 >
-                  <Ionicons name="bulb-outline" size={16} color={ZamanColors.persianGreen} />
+                  <Ionicons name="bulb-outline" size={16} color={CryptoKZColors.persianGreen} />
                   <Text style={styles.promptText}>
                     {prompt}
                   </Text>
@@ -359,7 +358,7 @@ export default function ExploreScreen() {
             value={chatState.input}
             onChangeText={(text) => setChatState(prev => ({ ...prev, input: text }))}
             placeholder={`Message ${AI_CHARACTER_NAME}...`}
-            placeholderTextColor={ZamanColors.gray[400]}
+            placeholderTextColor={CryptoKZColors.gray[400]}
             multiline
             editable={!chatState.loading}
             onKeyPress={(e: any) => {
@@ -380,7 +379,7 @@ export default function ExploreScreen() {
             <Ionicons 
               name="send" 
               size={20} 
-              color={ZamanColors.white} 
+              color={CryptoKZColors.white} 
             />
           </TouchableOpacity>
         </View>
@@ -395,18 +394,18 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
   },
   header: {
     paddingTop: Platform.OS === 'ios' ? 60 : 40,
     paddingHorizontal: 24,
     paddingBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: ZamanColors.gray[200],
+    borderBottomColor: CryptoKZColors.gray[200],
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
   },
   headerContent: {
     flex: 1,
@@ -414,13 +413,13 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: '600',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginBottom: 4,
     letterSpacing: 0.5,
   },
   headerSubtitle: {
     fontSize: 13,
-    color: ZamanColors.gray[500],
+    color: CryptoKZColors.gray[500],
     fontWeight: '400',
   },
   newChatButton: {
@@ -430,19 +429,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 12,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderWidth: 1,
-    borderColor: ZamanColors.gray[300],
+    borderColor: CryptoKZColors.gray[300],
   },
   newChatButtonText: {
-    color: ZamanColors.persianGreen,
+    color: CryptoKZColors.persianGreen,
     fontSize: 14,
     fontWeight: '600',
   },
   avatarSection: {
     alignItems: 'center',
     paddingVertical: 30,
-    backgroundColor: ZamanColors.cloud,
+    backgroundColor: CryptoKZColors.cloud,
   },
   avatarContainer: {
     width: isSmallScreen ? 100 : 120,
@@ -455,9 +454,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderWidth: 3,
-    borderColor: ZamanColors.persianGreen,
+    borderColor: CryptoKZColors.persianGreen,
   },
   statusBadge: {
     flexDirection: 'row',
@@ -465,10 +464,10 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: ZamanColors.gray[200],
+    borderColor: CryptoKZColors.gray[200],
   },
   statusDot: {
     width: 8,
@@ -479,7 +478,7 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 13,
     fontWeight: '500',
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
   },
   errorContainer: {
     marginHorizontal: 24,
@@ -489,7 +488,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    backgroundColor: ZamanColors.cloud,
+    backgroundColor: CryptoKZColors.cloud,
     borderWidth: 1,
     borderColor: '#f44336',
   },
@@ -501,7 +500,7 @@ const styles = StyleSheet.create({
   },
   messagesContainer: {
     flex: 1,
-    backgroundColor: ZamanColors.cloud,
+    backgroundColor: CryptoKZColors.cloud,
   },
   messagesContent: {
     padding: 24,
@@ -525,18 +524,18 @@ const styles = StyleSheet.create({
   },
   userBubble: {
     borderBottomRightRadius: 4,
-    backgroundColor: ZamanColors.persianGreen,
+    backgroundColor: CryptoKZColors.persianGreen,
   },
   aiBubble: {
     borderBottomLeftRadius: 4,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderWidth: 1,
-    borderColor: ZamanColors.gray[300],
+    borderColor: CryptoKZColors.gray[300],
   },
   timestamp: {
     fontSize: 11,
     marginTop: 6,
-    color: ZamanColors.gray[500],
+    color: CryptoKZColors.gray[500],
   },
   loadingContainer: {
     flexDirection: 'row',
@@ -546,7 +545,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 14,
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
     fontWeight: '500',
   },
   promptsContainer: {
@@ -556,7 +555,7 @@ const styles = StyleSheet.create({
   promptsTitle: {
     fontSize: 13,
     marginBottom: 12,
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -568,14 +567,14 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginBottom: 8,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
     borderWidth: 1,
-    borderColor: ZamanColors.gray[300],
+    borderColor: CryptoKZColors.gray[300],
   },
   promptText: {
     flex: 1,
     fontSize: 14,
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     lineHeight: 20,
   },
   inputContainer: {
@@ -585,16 +584,16 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingBottom: Platform.OS === 'ios' ? 34 : 16,
     borderTopWidth: 1,
-    borderTopColor: ZamanColors.gray[200],
+    borderTopColor: CryptoKZColors.gray[200],
     gap: 12,
-    backgroundColor: ZamanColors.white,
+    backgroundColor: CryptoKZColors.white,
   },
   input: {
     flex: 1,
     fontSize: 15,
     maxHeight: 100,
     paddingVertical: 8,
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
   },
   sendButton: {
     width: 44,
@@ -602,17 +601,17 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: ZamanColors.persianGreen,
+    backgroundColor: CryptoKZColors.persianGreen,
   },
   sendButtonDisabled: {
-    backgroundColor: ZamanColors.gray[400],
+    backgroundColor: CryptoKZColors.gray[400],
     opacity: 0.5,
   },
   ragMetadata: {
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: ZamanColors.gray[200],
+    borderTopColor: CryptoKZColors.gray[200],
     gap: 8,
   },
   agentsContainer: {
@@ -627,7 +626,7 @@ const styles = StyleSheet.create({
   metadataLabel: {
     fontSize: 11,
     fontWeight: '600',
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
   },
   metadataRow: {
     flexDirection: 'row',
@@ -644,22 +643,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
-    backgroundColor: ZamanColors.persianGreen,
+    backgroundColor: CryptoKZColors.persianGreen,
   },
   agentText: {
     fontSize: 10,
     fontWeight: '600',
     textTransform: 'capitalize',
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
   },
   sourcesCount: {
     fontSize: 11,
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
     fontWeight: '500',
   },
   confidence: {
     fontSize: 11,
-    color: ZamanColors.gray[600],
+    color: CryptoKZColors.gray[600],
     fontWeight: '500',
   },
 });
@@ -667,22 +666,22 @@ const styles = StyleSheet.create({
 // Markdown styles for AI messages (black text on white)
 const markdownAiStyles = StyleSheet.create({
   body: {
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     fontSize: 15,
     lineHeight: 22,
   },
   paragraph: {
     marginTop: 0,
     marginBottom: 10,
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
   },
   strong: {
     fontWeight: '700',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
   },
   em: {
     fontStyle: 'italic',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
   },
   bullet_list: {
     marginTop: 6,
@@ -695,17 +694,17 @@ const markdownAiStyles = StyleSheet.create({
   list_item: {
     flexDirection: 'row',
     marginBottom: 6,
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
   },
   bullet_list_icon: {
     marginLeft: 0,
     marginRight: 8,
-    color: ZamanColors.persianGreen,
+    color: CryptoKZColors.persianGreen,
     fontSize: 15,
   },
   code_inline: {
-    backgroundColor: ZamanColors.cloud,
-    color: ZamanColors.persianGreen,
+    backgroundColor: CryptoKZColors.cloud,
+    color: CryptoKZColors.persianGreen,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
@@ -713,14 +712,14 @@ const markdownAiStyles = StyleSheet.create({
     fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
   },
   code_block: {
-    backgroundColor: ZamanColors.cloud,
+    backgroundColor: CryptoKZColors.cloud,
     padding: 12,
     borderRadius: 8,
     marginTop: 6,
     marginBottom: 6,
   },
   fence: {
-    backgroundColor: ZamanColors.cloud,
+    backgroundColor: CryptoKZColors.cloud,
     padding: 12,
     borderRadius: 8,
     marginTop: 6,
@@ -729,32 +728,32 @@ const markdownAiStyles = StyleSheet.create({
   heading1: {
     fontSize: 20,
     fontWeight: '700',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginTop: 10,
     marginBottom: 10,
   },
   heading2: {
     fontSize: 18,
     fontWeight: '600',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginTop: 8,
     marginBottom: 8,
   },
   heading3: {
     fontSize: 16,
     fontWeight: '600',
-    color: ZamanColors.black,
+    color: CryptoKZColors.black,
     marginTop: 6,
     marginBottom: 6,
   },
   link: {
-    color: ZamanColors.persianGreen,
+    color: CryptoKZColors.persianGreen,
     textDecorationLine: 'underline',
   },
   blockquote: {
-    backgroundColor: ZamanColors.cloud,
+    backgroundColor: CryptoKZColors.cloud,
     borderLeftWidth: 3,
-    borderLeftColor: ZamanColors.persianGreen,
+    borderLeftColor: CryptoKZColors.persianGreen,
     paddingLeft: 12,
     paddingVertical: 8,
     marginTop: 6,
@@ -765,22 +764,22 @@ const markdownAiStyles = StyleSheet.create({
 // Markdown styles for User messages (white text on green)
 const markdownUserStyles = StyleSheet.create({
   body: {
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
     fontSize: 15,
     lineHeight: 22,
   },
   paragraph: {
     marginTop: 0,
     marginBottom: 10,
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
   },
   strong: {
     fontWeight: '700',
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
   },
   em: {
     fontStyle: 'italic',
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
   },
   bullet_list: {
     marginTop: 6,
@@ -793,17 +792,17 @@ const markdownUserStyles = StyleSheet.create({
   list_item: {
     flexDirection: 'row',
     marginBottom: 6,
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
   },
   bullet_list_icon: {
     marginLeft: 0,
     marginRight: 8,
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
     fontSize: 15,
   },
   code_inline: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
@@ -827,32 +826,32 @@ const markdownUserStyles = StyleSheet.create({
   heading1: {
     fontSize: 20,
     fontWeight: '700',
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
     marginTop: 10,
     marginBottom: 10,
   },
   heading2: {
     fontSize: 18,
     fontWeight: '600',
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
     marginTop: 8,
     marginBottom: 8,
   },
   heading3: {
     fontSize: 16,
     fontWeight: '600',
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
     marginTop: 6,
     marginBottom: 6,
   },
   link: {
-    color: ZamanColors.white,
+    color: CryptoKZColors.white,
     textDecorationLine: 'underline',
   },
   blockquote: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderLeftWidth: 3,
-    borderLeftColor: ZamanColors.white,
+    borderLeftColor: CryptoKZColors.white,
     paddingLeft: 12,
     paddingVertical: 8,
     marginTop: 6,

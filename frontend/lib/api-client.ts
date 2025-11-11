@@ -17,6 +17,8 @@ export interface Account {
   deleted_at?: string | null;
 }
 
+export type SupportedCrypto = 'BTC' | 'ETH' | 'USDT';
+
 export interface Transaction {
   id: number;
   user_id: number;
@@ -173,6 +175,71 @@ export interface FinancialAnalysisResponse {
   ai_insights: string;
   specific_query: string | null;
   status: string;
+}
+
+/**
+ * Fetch crypto -> KZT rates
+ * Uses CoinGecko public API. Returns mapping of symbol to KZT price.
+ */
+export async function getCryptoRatesKZT(symbols: SupportedCrypto[]): Promise<Record<SupportedCrypto, number>> {
+  // Map symbols to CoinGecko IDs
+  const idMap: Record<SupportedCrypto, string> = {
+    BTC: 'bitcoin',
+    ETH: 'ethereum',
+    USDT: 'tether',
+  };
+  const ids = symbols.map(s => idMap[s]).join(',');
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=kzt`;
+  const res = await fetch(url, { method: 'GET' });
+  if (!res.ok) {
+    throw new Error('Failed to fetch crypto rates');
+  }
+  const data = await res.json();
+  const result: Record<SupportedCrypto, number> = {} as any;
+  symbols.forEach(sym => {
+    const id = idMap[sym];
+    const price = data?.[id]?.kzt;
+    if (typeof price !== 'number') {
+      throw new Error(`Rate for ${sym} not available`);
+    }
+    result[sym] = price;
+  });
+  return result;
+}
+
+/**
+ * Convert from a crypto account to a KZT wallet:
+ * - Withdraw crypto amount from the crypto account
+ * - Deposit converted KZT amount to the destination KZT account
+ */
+export async function convertCryptoToKZT(params: {
+  userId: number;
+  fromAccountId: number;
+  fromSymbol: SupportedCrypto;
+  amountCrypto: number;
+  toKZTAccountId: number;
+  rateKZTPerCrypto: number;
+}): Promise<{ withdrawal: Transaction; deposit: Transaction; kztAmount: number }> {
+  const { userId, fromAccountId, fromSymbol, amountCrypto, toKZTAccountId, rateKZTPerCrypto } = params;
+  if (amountCrypto <= 0) {
+    throw new Error('Amount must be positive');
+  }
+  const kztAmount = amountCrypto * rateKZTPerCrypto;
+  // 1) Withdraw from crypto account
+  const withdrawal = await createWithdrawal(userId, {
+    account_id: fromAccountId,
+    amount: amountCrypto,
+    currency: fromSymbol,
+    description: `Convert ${amountCrypto} ${fromSymbol} to KZT`,
+  });
+  // 2) Deposit into KZT account
+  const deposit = await createDeposit(userId, {
+    account_id: toKZTAccountId,
+    amount: Number(kztAmount.toFixed(2)),
+    currency: 'KZT',
+    description: `Converted from ${amountCrypto} ${fromSymbol}`,
+  });
+  return { withdrawal, deposit, kztAmount };
 }
 
 /**

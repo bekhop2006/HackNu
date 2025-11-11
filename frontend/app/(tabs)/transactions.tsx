@@ -14,7 +14,7 @@
   import { useState, useEffect, useCallback } from 'react';
   import { useRouter } from 'expo-router';
   import { Ionicons } from '@expo/vector-icons';
-  import { ZamanColors } from '@/constants/theme';
+  import { CryptoKZColors } from '@/constants/theme';
   import {
     getUserAccounts,
     getUserTransactions,
@@ -246,15 +246,15 @@
     function getTransactionColor(type: string): string {
       switch (type) {
         case 'deposit':
-          return ZamanColors.persianGreen;
+          return CryptoKZColors.persianGreen;
         case 'withdrawal':
-          return ZamanColors.persianGreen;
+          return CryptoKZColors.persianGreen;
         case 'transfer':
-          return ZamanColors.persianGreen;
+          return CryptoKZColors.persianGreen;
         case 'purchase':
-          return ZamanColors.persianGreen;
+          return CryptoKZColors.persianGreen;
         default:
-          return ZamanColors.gray[500];
+          return CryptoKZColors.gray[500];
       }
     }
   
@@ -276,7 +276,7 @@
     if (loading) {
       return (
         <View style={[styles.container, styles.centerContent]}>
-          <ActivityIndicator size="large" color={ZamanColors.persianGreen} />
+          <ActivityIndicator size="large" color={CryptoKZColors.persianGreen} />
           <Text style={styles.loadingText}>Loading wallet...</Text>
         </View>
       );
@@ -285,7 +285,7 @@
     if (!account) {
       return (
         <View style={[styles.container, styles.centerContent]}>
-          <Ionicons name="wallet-outline" size={80} color={ZamanColors.gray[400]} />
+          <Ionicons name="wallet-outline" size={80} color={CryptoKZColors.gray[400]} />
           <Text style={styles.emptyStateText}>No account found</Text>
           <Text style={styles.emptyStateSubtext}>Please contact support</Text>
         </View>
@@ -328,21 +328,21 @@
           <View style={styles.actionsContainer}>
             <TouchableOpacity style={styles.actionButton} onPress={() => openModal('deposit')}>
               <View style={styles.actionIconContainer}>
-                <Ionicons name="arrow-down-circle" size={20} color={ZamanColors.persianGreen} />
+                <Ionicons name="arrow-down-circle" size={20} color={CryptoKZColors.persianGreen} />
               </View>
               <Text style={styles.actionButtonText}>Deposit</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.actionButton} onPress={() => openModal('withdrawal')}>
               <View style={styles.actionIconContainer}>
-                <Ionicons name="arrow-up-circle" size={20} color={ZamanColors.persianGreen} />
+                <Ionicons name="arrow-up-circle" size={20} color={CryptoKZColors.persianGreen} />
               </View>
               <Text style={styles.actionButtonText}>Withdraw</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.actionButton} onPress={() => openModal('transfer')}>
               <View style={styles.actionIconContainer}>
-                <Ionicons name="swap-horizontal" size={20} color={ZamanColors.persianGreen} />
+                <Ionicons name="swap-horizontal" size={20} color={CryptoKZColors.persianGreen} />
               </View>
               <Text style={styles.actionButtonText}>Transfer</Text>
             </TouchableOpacity>
@@ -354,7 +354,7 @@
   
             {transactions.length === 0 ? (
               <View style={styles.emptyTransactions}>
-                <Ionicons name="receipt-outline" size={60} color={ZamanColors.gray[400]} />
+                <Ionicons name="receipt-outline" size={60} color={CryptoKZColors.gray[400]} />
                 <Text style={styles.emptyTransactionsText}>No transactions yet</Text>
               </View>
             ) : (
@@ -401,7 +401,7 @@
                   {modalType === 'deposit' ? 'Deposit' : modalType === 'withdrawal' ? 'Withdrawal' : 'Transfer'}
                 </Text>
                 <TouchableOpacity onPress={closeModal}>
-                  <Ionicons name="close" size={28} color={ZamanColors.gray[600]} />
+                  <Ionicons name="close" size={28} color={CryptoKZColors.gray[600]} />
                 </TouchableOpacity>
               </View>
   
@@ -486,7 +486,7 @@
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: ZamanColors.white,
+      backgroundColor: CryptoKZColors.white,
     },
     centerContent: {
       justifyContent: 'center',
@@ -501,39 +501,39 @@
     loadingText: {
       marginTop: 16,
       fontSize: 16,
-      color: ZamanColors.gray[600],
+      color: CryptoKZColors.gray[600],
     },
     emptyStateText: {
       marginTop: 16,
       fontSize: 18,
       fontWeight: '600',
-      color: ZamanColors.gray[700],
+      color: CryptoKZColors.gray[700],
     },
     emptyStateSubtext: {
       marginTop: 8,
       fontSize: 14,
-      color: ZamanColors.gray[500],
+      color: CryptoKZColors.gray[500],
     },
     header: {
       paddingTop: Platform.OS === 'ios' ? 60 : 40,
       paddingHorizontal: 24,
       paddingBottom: 16,
-      backgroundColor: ZamanColors.white,
+      backgroundColor: CryptoKZColors.white,
     },
     headerTitle: {
       fontSize: 24,
       fontWeight: '600',
-      color: ZamanColors.black,
+      color: CryptoKZColors.black,
       letterSpacing: 0.3,
     },
     balanceCard: {
-      backgroundColor: ZamanColors.white,
+      backgroundColor: CryptoKZColors.white,
       marginHorizontal: 24,
       borderRadius: 16,
       padding: 20,
       borderWidth: 2,
-      borderColor: ZamanColors.persianGreen,
-      shadowColor: ZamanColors.persianGreen,
+      borderColor: CryptoKZColors.persianGreen,
+      shadowColor: CryptoKZColors.persianGreen,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 8,
@@ -541,7 +541,7 @@
     },
     balanceLabel: {
       fontSize: 11,
-      color: ZamanColors.gray[600],
+      color: CryptoKZColors.gray[600],
       fontWeight: '500',
       textTransform: 'uppercase',
       letterSpacing: 0.8,
@@ -550,7 +550,7 @@
     balanceAmount: {
       fontSize: 32,
       fontWeight: '700',
-      color: ZamanColors.persianGreen,
+      color: CryptoKZColors.persianGreen,
       marginBottom: 16,
     },
     accountInfo: {
@@ -558,14 +558,14 @@
       justifyContent: 'space-between',
       paddingTop: 16,
       borderTopWidth: 1,
-      borderTopColor: ZamanColors.gray[200],
+      borderTopColor: CryptoKZColors.gray[200],
     },
     accountInfoItem: {
       flex: 1,
     },
     accountInfoLabel: {
       fontSize: 10,
-      color: ZamanColors.gray[500],
+      color: CryptoKZColors.gray[500],
       fontWeight: '500',
       textTransform: 'uppercase',
       letterSpacing: 0.4,
@@ -574,7 +574,7 @@
     accountInfoValue: {
       fontSize: 13,
       fontWeight: '600',
-      color: ZamanColors.black,
+      color: CryptoKZColors.black,
       textTransform: 'capitalize',
     },
     actionsContainer: {
@@ -590,21 +590,21 @@
       justifyContent: 'center',
       paddingVertical: 16,
       borderRadius: 12,
-      backgroundColor: ZamanColors.white,
+      backgroundColor: CryptoKZColors.white,
       borderWidth: 1,
-      borderColor: ZamanColors.gray[300],
+      borderColor: CryptoKZColors.gray[300],
       gap: 8,
     },
     actionIconContainer: {
       width: 40,
       height: 40,
       borderRadius: 20,
-      backgroundColor: ZamanColors.cloud,
+      backgroundColor: CryptoKZColors.cloud,
       alignItems: 'center',
       justifyContent: 'center',
     },
     actionButtonText: {
-      color: ZamanColors.black,
+      color: CryptoKZColors.black,
       fontSize: 12,
       fontWeight: '600',
     },
@@ -615,7 +615,7 @@
     sectionTitle: {
       fontSize: 15,
       fontWeight: '600',
-      color: ZamanColors.black,
+      color: CryptoKZColors.black,
       marginBottom: 16,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
@@ -628,14 +628,14 @@
     emptyTransactionsText: {
       marginTop: 16,
       fontSize: 16,
-      color: ZamanColors.gray[500],
+      color: CryptoKZColors.gray[500],
     },
     transactionItem: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: ZamanColors.white,
+      backgroundColor: CryptoKZColors.white,
       borderWidth: 1,
-      borderColor: ZamanColors.gray[300],
+      borderColor: CryptoKZColors.gray[300],
       borderRadius: 12,
       padding: 14,
       marginBottom: 10,
@@ -647,7 +647,7 @@
       alignItems: 'center',
       justifyContent: 'center',
       marginRight: 12,
-      backgroundColor: ZamanColors.cloud,
+      backgroundColor: CryptoKZColors.cloud,
     },
     transactionDetails: {
       flex: 1,
@@ -655,23 +655,23 @@
     transactionType: {
       fontSize: 14,
       fontWeight: '600',
-      color: ZamanColors.black,
+      color: CryptoKZColors.black,
       textTransform: 'capitalize',
       marginBottom: 2,
     },
     transactionDate: {
       fontSize: 11,
-      color: ZamanColors.gray[500],
+      color: CryptoKZColors.gray[500],
     },
     transactionDescription: {
       fontSize: 12,
-      color: ZamanColors.gray[600],
+      color: CryptoKZColors.gray[600],
       marginTop: 2,
     },
     transactionAmount: {
       fontSize: 15,
       fontWeight: '700',
-      color: ZamanColors.persianGreen,
+      color: CryptoKZColors.persianGreen,
     },
     modalOverlay: {
       flex: 1,
@@ -679,7 +679,7 @@
       justifyContent: 'flex-end',
     },
     modalContent: {
-      backgroundColor: ZamanColors.white,
+      backgroundColor: CryptoKZColors.white,
       borderTopLeftRadius: 24,
       borderTopRightRadius: 24,
       paddingTop: 20,
@@ -693,12 +693,12 @@
       paddingHorizontal: 24,
       paddingBottom: 20,
       borderBottomWidth: 1,
-      borderBottomColor: ZamanColors.gray[300],
+      borderBottomColor: CryptoKZColors.gray[300],
     },
     modalTitle: {
       fontSize: 24,
       fontWeight: '600',
-      color: ZamanColors.black,
+      color: CryptoKZColors.black,
     },
     modalBody: {
       paddingHorizontal: 24,
@@ -710,22 +710,22 @@
     inputLabel: {
       fontSize: 14,
       fontWeight: '600',
-      color: ZamanColors.gray[700],
+      color: CryptoKZColors.gray[700],
       marginBottom: 8,
     },
     input: {
       borderWidth: 1,
-      borderColor: ZamanColors.gray[300],
+      borderColor: CryptoKZColors.gray[300],
       borderRadius: 12,
       paddingHorizontal: 16,
       paddingVertical: 12,
       fontSize: 16,
-      color: ZamanColors.black,
-      backgroundColor: ZamanColors.white,
+      color: CryptoKZColors.black,
+      backgroundColor: CryptoKZColors.white,
     },
     inputReadonly: {
-      backgroundColor: ZamanColors.gray[100],
-      color: ZamanColors.gray[600],
+      backgroundColor: CryptoKZColors.gray[100],
+      color: CryptoKZColors.gray[600],
     },
     inputMultiline: {
       minHeight: 80,
@@ -754,19 +754,19 @@
       paddingVertical: 16,
       borderRadius: 12,
       borderWidth: 1,
-      borderColor: ZamanColors.gray[300],
+      borderColor: CryptoKZColors.gray[300],
       alignItems: 'center',
     },
     cancelButtonText: {
       fontSize: 16,
       fontWeight: '600',
-      color: ZamanColors.gray[700],
+      color: CryptoKZColors.gray[700],
     },
     confirmButton: {
       flex: 1,
       paddingVertical: 16,
       borderRadius: 12,
-      backgroundColor: ZamanColors.persianGreen,
+      backgroundColor: CryptoKZColors.persianGreen,
       alignItems: 'center',
     },
     confirmButtonDisabled: {
@@ -775,7 +775,7 @@
     confirmButtonText: {
       fontSize: 16,
       fontWeight: '600',
-      color: ZamanColors.white,
+      color: CryptoKZColors.white,
     },
   });
   

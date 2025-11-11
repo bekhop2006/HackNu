@@ -10,8 +10,8 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { ZamanColors } from '@/constants/theme';
-import { getFinancialAnalysis, FinancialAnalysisResponse } from '@/lib/api-client';
+import { CryptoKZColors } from '@/constants/theme';
+import { getFinancialAnalysis, FinancialAnalysisResponse, getUserAccounts, Account, getCryptoRatesKZT, SupportedCrypto, convertCryptoToKZT } from '@/lib/api-client';
 
 interface UserData {
   id: number;
@@ -27,6 +27,10 @@ export default function FinancialAnalysisScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [monthsBack, setMonthsBack] = useState(6);
   const [isInsightsExpanded, setIsInsightsExpanded] = useState(true);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [ratesKZT, setRatesKZT] = useState<Record<SupportedCrypto, number> | null>(null);
+  const [isConverting, setIsConverting] = useState(false);
+  const [conversionError, setConversionError] = useState<string | null>(null);
 
   useEffect(() => {
     loadUser();
@@ -34,10 +38,36 @@ export default function FinancialAnalysisScreen() {
 
   useEffect(() => {
     if (user) {
-      loadAnalysis();
+      loadAll();
     }
   }, [user, monthsBack]);
 
+  async function loadAll() {
+    await Promise.all([loadAnalysis(), loadAccountsAndRates()]);
+  }
+
+  async function loadAccountsAndRates() {
+    if (!user) return;
+    try {
+      const accs = await getUserAccounts(user.id);
+      setAccounts(accs);
+      const cryptoSymbols = Array.from(
+        new Set(
+          accs
+            .filter(a => a.account_type?.toUpperCase() === 'CRYPTO')
+            .map(a => a.currency?.toUpperCase() as SupportedCrypto)
+        )
+      ).filter(s => ['BTC', 'ETH', 'USDT'].includes(s)) as SupportedCrypto[];
+      if (cryptoSymbols.length > 0) {
+        const r = await getCryptoRatesKZT(cryptoSymbols);
+        setRatesKZT(r);
+      } else {
+        setRatesKZT(null);
+      }
+    } catch (e) {
+      console.error('Error loading accounts/rates:', e);
+    }
+  }
   function loadUser() {
     try {
       if (typeof localStorage !== 'undefined') {
@@ -72,7 +102,7 @@ export default function FinancialAnalysisScreen() {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await loadAnalysis();
+    await loadAll();
     setRefreshing(false);
   }, [user, monthsBack]);
 
@@ -102,6 +132,68 @@ export default function FinancialAnalysisScreen() {
 
   function formatPercentage(value: number): string {
     return `${value.toFixed(1)}%`;
+  }
+
+  function getCryptoPortfolio() {
+    const cryptoAccounts = accounts.filter(
+      a => a.account_type?.toUpperCase() === 'CRYPTO'
+    );
+    const items = cryptoAccounts.map(a => {
+      const symbol = a.currency?.toUpperCase() as SupportedCrypto;
+      const balance = Number(a.balance);
+      const rate = ratesKZT?.[symbol] ?? null;
+      const kztValue = rate ? balance * rate : null;
+      return {
+        account: a,
+        symbol,
+        balance,
+        rate,
+        kztValue,
+      };
+    });
+    const totalKZT = items.reduce((sum, it) => sum + (it.kztValue ?? 0), 0);
+    return { items, totalKZT };
+  }
+
+  async function handleConvertToKZT(params: {
+    fromAccountId: number;
+    fromSymbol: SupportedCrypto;
+    amountCrypto: number;
+    toKZTAccountId: number;
+  }) {
+    if (!user) return;
+    setConversionError(null);
+    setIsConverting(true);
+    try {
+      const rate = ratesKZT?.[params.fromSymbol];
+      if (!rate) {
+        throw new Error('Rate not available');
+      }
+      await convertCryptoToKZT({
+        userId: user.id,
+        fromAccountId: params.fromAccountId,
+        fromSymbol: params.fromSymbol,
+        amountCrypto: params.amountCrypto,
+        toKZTAccountId: params.toKZTAccountId,
+        rateKZTPerCrypto: rate,
+      });
+      await loadAll();
+      if (Platform.OS === 'web') {
+        alert('Conversion successful');
+      } else {
+        Alert.alert('Success', 'Conversion successful');
+      }
+    } catch (e: any) {
+      const msg = e?.message || 'Conversion failed';
+      setConversionError(msg);
+      if (Platform.OS === 'web') {
+        alert(`Error: ${msg}`);
+      } else {
+        Alert.alert('Error', msg);
+      }
+    } finally {
+      setIsConverting(false);
+    }
   }
 
   function renderFormattedInsights(text: string) {
@@ -209,7 +301,7 @@ export default function FinancialAnalysisScreen() {
   if (loading) {
     return (
       <View style={[styles.container, styles.centerContent]}>
-        <ActivityIndicator size="large" color={ZamanColors.persianGreen} />
+        <ActivityIndicator size="large" color={CryptoKZColors.persianGreen} />
         <Text style={styles.loadingText}>Analyzing your finances</Text>
         <View style={styles.loadingDots}>
           <View style={[styles.dot, styles.dot1]} />
@@ -242,7 +334,7 @@ export default function FinancialAnalysisScreen() {
           <RefreshControl 
             refreshing={refreshing} 
             onRefresh={onRefresh}
-            tintColor={ZamanColors.persianGreen}
+            tintColor={CryptoKZColors.persianGreen}
           />
         }
         showsVerticalScrollIndicator={false}
@@ -367,6 +459,61 @@ export default function FinancialAnalysisScreen() {
           </View>
         </View>
 
+        {/* Crypto Portfolio */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Crypto Portfolio</Text>
+          <View style={styles.balanceCard}>
+            {(() => {
+              const { items, totalKZT } = getCryptoPortfolio();
+              if (items.length === 0) {
+                return <Text style={styles.emptyStateSubtext}>No crypto accounts yet</Text>;
+              }
+              return (
+                <View>
+                  {items.map(it => (
+                    <View key={it.account.id} style={styles.balanceRow}>
+                      <View style={styles.currencyBadge}>
+                        <Text style={styles.currencyBadgeText}>{it.symbol}</Text>
+                      </View>
+                      <View style={{ alignItems: 'flex-end' }}>
+                        <Text style={styles.metricValue}>
+                          {it.balance.toFixed(6)} {it.symbol}
+                        </Text>
+                        {it.kztValue != null && (
+                          <Text style={styles.spendingAmount}>
+                            {formatCurrency(it.kztValue, 'KZT')}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+                  ))}
+                  <View style={styles.balanceMeta}>
+                    <Text style={styles.balanceMetaText}>
+                      Total value: {formatCurrency(totalKZT, 'KZT')}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })()}
+          </View>
+        </View>
+
+        {/* Convert Crypto to KZT */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Convert Crypto to Wallet (KZT)</Text>
+          <View style={styles.actionsCard}>
+            <CryptoConvertForm
+              accounts={accounts}
+              ratesKZT={ratesKZT}
+              loading={isConverting}
+              onSubmit={handleConvertToKZT}
+            />
+            {conversionError && (
+              <Text style={{ color: '#DC2626', marginTop: 8 }}>{conversionError}</Text>
+            )}
+          </View>
+        </View>
+
         {/* AI Insights */}
         <View style={styles.section}>
           <TouchableOpacity
@@ -473,7 +620,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: ZamanColors.persianGreen,
+    backgroundColor: CryptoKZColors.persianGreen,
   },
   dot1: { opacity: 0.4 },
   dot2: { opacity: 0.7 },
@@ -937,4 +1084,114 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
+
+type ConvertFormProps = {
+  accounts: Account[];
+  ratesKZT: Record<SupportedCrypto, number> | null;
+  loading: boolean;
+  onSubmit: (p: { fromAccountId: number; fromSymbol: SupportedCrypto; amountCrypto: number; toKZTAccountId: number }) => void;
+};
+
+function CryptoConvertForm({ accounts, ratesKZT, loading, onSubmit }: ConvertFormProps) {
+  const [fromId, setFromId] = useState<number | null>(null);
+  const [toId, setToId] = useState<number | null>(null);
+  const [amount, setAmount] = useState<number>(0);
+
+  const cryptoAccounts = accounts.filter(a => a.account_type?.toUpperCase() === 'CRYPTO');
+  const kztAccounts = accounts.filter(a => a.currency?.toUpperCase() === 'KZT');
+
+  return (
+    <View>
+      <Text style={styles.metricLabel}>From Crypto Account</Text>
+      <View style={{ gap: 8 }}>
+        {cryptoAccounts.map(a => (
+          <TouchableOpacity
+            key={a.id}
+            onPress={() => setFromId(a.id)}
+            style={[styles.actionRow, fromId === a.id && { borderLeftColor: '#0D8377', backgroundColor: '#ECFDF5' }]}
+          >
+            <Text style={styles.actionText}>
+              #{a.id} — {Number(a.balance).toFixed(6)} {a.currency}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <View style={{ height: 12 }} />
+
+      <Text style={styles.metricLabel}>To KZT Wallet</Text>
+      <View style={{ gap: 8 }}>
+        {kztAccounts.map(a => (
+          <TouchableOpacity
+            key={a.id}
+            onPress={() => setToId(a.id)}
+            style={[styles.actionRow, toId === a.id && { borderLeftColor: '#0D8377', backgroundColor: '#ECFDF5' }]}
+          >
+            <Text style={styles.actionText}>
+              #{a.id} — {Number(a.balance).toFixed(2)} KZT
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <View style={{ height: 12 }} />
+
+      <Text style={styles.metricLabel}>Amount (Crypto)</Text>
+      <View style={[styles.actionRow, { justifyContent: 'flex-start' }]}>
+        <TouchableOpacity onPress={() => setAmount(prev => Math.max(0, Number((prev - 0.01).toFixed(2))))} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
+          <Text>-0.01</Text>
+        </TouchableOpacity>
+        <View style={{ width: 12 }} />
+        <TouchableOpacity onPress={() => setAmount(prev => Number((prev + 0.01).toFixed(2)))} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
+          <Text>+0.01</Text>
+        </TouchableOpacity>
+        <View style={{ marginLeft: 16 }}>
+          <Text>{amount.toFixed(6)}</Text>
+        </View>
+      </View>
+
+      {fromId && (() => {
+        const acc = cryptoAccounts.find(a => a.id === fromId)!;
+        const sym = acc.currency?.toUpperCase() as SupportedCrypto;
+        const rate = ratesKZT?.[sym];
+        if (!rate) return null;
+        const kzt = amount * rate;
+        return (
+          <View style={{ marginTop: 8 }}>
+            <Text style={styles.balanceMetaText}>
+              Rate: 1 {sym} ≈ {rate.toLocaleString(undefined, { maximumFractionDigits: 2 })} KZT
+            </Text>
+            <Text style={styles.balanceMetaText}>
+              You will receive ≈ {kzt.toLocaleString(undefined, { maximumFractionDigits: 2 })} KZT
+            </Text>
+          </View>
+        );
+      })()}
+
+      <View style={{ height: 12 }} />
+
+      <TouchableOpacity
+        disabled={loading || !fromId || !toId || amount <= 0}
+        onPress={() => {
+          const fromAcc = cryptoAccounts.find(a => a.id === fromId);
+          if (!fromAcc) return;
+          onSubmit({
+            fromAccountId: fromAcc.id,
+            fromSymbol: fromAcc.currency?.toUpperCase() as SupportedCrypto,
+            amountCrypto: amount,
+            toKZTAccountId: toId!,
+          });
+        }}
+        style={[
+          styles.periodChip,
+          { alignSelf: 'flex-start', backgroundColor: '#0D8377', borderColor: '#0D8377', opacity: loading || !fromId || !toId || amount <= 0 ? 0.5 : 1 },
+        ]}
+      >
+        <Text style={[styles.periodChipText, { color: '#FFFFFF', fontWeight: '700' }]}>
+          {loading ? 'Converting...' : 'Convert'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
 
